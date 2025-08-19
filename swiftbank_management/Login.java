@@ -1,4 +1,4 @@
-package swiftbank_management;
+package views;
 
 import javax.swing.*;
 import java.awt.*;
@@ -13,78 +13,86 @@ public class Login extends JFrame implements ActionListener {
     Login(){
         super("Swift Bank");
 
-        ImageIcon i1 = new ImageIcon(ClassLoader.getSystemResource("icons/bank.png"));
-        Image i2 = i1.getImage().getScaledInstance(100,100, Image.SCALE_DEFAULT);
-        ImageIcon i3 = new ImageIcon(i2);
-        JLabel image = new JLabel(i3);
-        image.setBounds(350,10,100,100);
-        add(image);
+        //Bank image
+        JLabel bankimage = new JLabel(new ImageIcon(
+                new ImageIcon(ClassLoader.getSystemResource("images/bank.png"))
+                        .getImage().getScaledInstance(100,100, Image.SCALE_DEFAULT)));
+        bankimage.setBounds(350,10,100,100);
+        add(bankimage);
 
-        ImageIcon ii1 = new ImageIcon(ClassLoader.getSystemResource("icons/card.png"));
-        Image ii2 = ii1.getImage().getScaledInstance(100,100, Image.SCALE_DEFAULT);
-        ImageIcon ii3 = new ImageIcon(ii2);
-        JLabel iimage = new JLabel(ii3);
-        iimage.setBounds(630,350,100,100);
-        add(iimage);
 
-        ImageIcon iii1 = new ImageIcon(ClassLoader.getSystemResource("icons/backbg.png"));
-        Image iii2 = iii1.getImage().getScaledInstance(850,480, Image.SCALE_DEFAULT);
-        ImageIcon iii3 = new ImageIcon(iii2);
-        JLabel iiimage = new JLabel(iii3);
-        iiimage.setBounds(0,0,850,480);
-        add(iiimage);
+        //Card image
+        JLabel cardimage = new JLabel(new ImageIcon(
+                new ImageIcon(ClassLoader.getSystemResource("images/card.png"))
+                        .getImage().getScaledInstance(100,100, Image.SCALE_DEFAULT)));
+        cardimage.setBounds(630,350,100,100);
+        add(cardimage);
 
-        label1 = new JLabel("WELCOME TO SWIFT BANK ATM");
-        label1.setForeground(Color.WHITE);
-        label1.setFont(new Font("AvantGarde", Font.BOLD, 28));
-        label1.setBounds(200, 125, 650, 40);
-        iiimage.add(label1);// Make sure to add it to the background label
+        //Background
+        JLabel backgroundimage = new JLabel(new ImageIcon(
+                new ImageIcon(ClassLoader.getSystemResource("images/backbg.png"))
+                        .getImage().getScaledInstance(850,480, Image.SCALE_DEFAULT)));
+        backgroundimage.setBounds(0,0,850,480);
+        add(backgroundimage);
 
+        //Welcome Text
+        backgroundimage.add(new JLabel("WELCOME TO SWIFT BANK"){{
+            setForeground(Color.WHITE);
+            setFont(new Font("Algerian", Font.ITALIC, 35));
+            setBounds(200, 125, 450, 40);
+        }});
+
+        // Card number label
         label2 = new JLabel("Card No: ");
         label2.setFont(new Font("Ralway", Font.BOLD, 28));
         label2.setForeground(Color.WHITE);
-        label2.setBounds(150,190,375,30);
-        iiimage.add(label2);
+        label2.setBounds(200,190,375,30);
+        backgroundimage.add(label2);
 
+        // Card number field
         textField2 = new JTextField(15);
-        textField2.setBounds(325,190,230,30);
+        textField2.setBounds(340,190,230,30);
         textField2.setFont(new Font("Arial", Font.BOLD,14));
-        iiimage.add(textField2);
+        backgroundimage.add(textField2);
 
+        // PIN label
         label3 = new JLabel("PIN: ");
         label3.setFont(new Font("Ralway", Font.BOLD, 28));
         label3.setForeground(Color.WHITE);
-        label3.setBounds(150,250,375,30);
-        iiimage.add(label3);
+        label3.setBounds(200,250,375,30);
+        backgroundimage.add(label3);
 
+        // PIN field
         passwordField3 = new JPasswordField(15);
-        passwordField3.setBounds(325,250,230,30);
+        passwordField3.setBounds(340,250,230,30);
         passwordField3.setFont(new Font("Arial", Font.BOLD, 14));
-        iiimage.add(passwordField3);
+        backgroundimage.add(passwordField3);
 
-        button1 = new JButton("SIGN IN");
-        button1.setFont(new Font("Arial", Font.BOLD, 14));
-        button1.setForeground(Color.WHITE);
-        button1.setBackground(Color.BLACK);
-        button1.setBounds(300,300,100,30);
-        button1.addActionListener(this);
-        iiimage.add(button1);
 
-        button2 = new JButton("CLEAR");
-        button2.setFont(new Font("Arial", Font.BOLD, 14));
-        button2.setForeground(Color.WHITE);
-        button2.setBackground(Color.BLACK);
-        button2.setBounds(430,300,100,30);
-        button2.addActionListener(this);
-        iiimage.add(button2);
+        //Buttons
+        button1 = createStyledButton("SIGN IN", 340, 300, 100, 30, new Color(46, 204, 113), backgroundimage); // Green
+        button2 = createStyledButton("CLEAR", 470, 300, 100, 30, new Color(231, 76, 60), backgroundimage);   // Red
+        button3 = createStyledButton("SIGN UP", 340, 350, 230, 30, new Color(52, 152, 219), backgroundimage); // Blue
 
-        button3 = new JButton("SIGN UP");
-        button3.setFont(new Font("Arial", Font.BOLD, 14));
-        button3.setForeground(Color.WHITE);
-        button3.setBackground(Color.BLACK);
-        button3.setBounds(300,350,230,30);
-        button3.addActionListener(this);
-        iiimage.add(button3);
+        // Set starting positions (off-screen)
+        for (JComponent comp : new JComponent[]{ textField2, passwordField3, button1, button2, button3 }) {
+            comp.setLocation(comp.getX(), 600);
+        }
+
+        // Also move labels off-screen
+        for (JComponent comp : new JComponent[]{ label2, label3 }) {
+            comp.setLocation(comp.getX(), 600);
+        }
+
+        // Animate them into final positions
+        animateComponent(label2, 200, 190, 10);       // Card No label
+        animateComponent(textField2, 340, 190, 10);   // Card No textfield
+        animateComponent(label3, 200, 250, 10);       // PIN label
+        animateComponent(passwordField3, 340, 250, 10); // PIN field
+        animateComponent(button1, 340, 300, 10);      // Sign In
+        animateComponent(button2, 470, 300, 10);      // Clear
+        animateComponent(button3, 340, 350, 10);      // Sign Up
+
 
 
         setLayout(null);
@@ -92,6 +100,49 @@ public class Login extends JFrame implements ActionListener {
         setLocation(450,200);
         setVisible(true);
     }
+
+    //  styled buttons
+    private JButton createStyledButton(String text, int x, int y, int w, int h, Color bgColor, JComponent parent) {
+        JButton btn = new JButton(text);
+        btn.setFont(new Font("Arial", Font.BOLD, 14));
+        btn.setForeground(Color.WHITE);
+        btn.setBackground(bgColor);
+        btn.setFocusPainted(false);  // Removes ugly focus border
+        btn.setBorderPainted(false); // Flat style
+        btn.setBounds(x, y, w, h);
+        btn.addActionListener(this);
+
+        // Hover effect (lighter shade on hover)
+        btn.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                btn.setBackground(bgColor.brighter());
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                btn.setBackground(bgColor);
+            }
+        });
+
+        parent.add(btn);
+        return btn;
+    }
+
+    // Smooth slide-up animation
+    private void animateComponent(JComponent comp, int targetX, int targetY, int speed) {
+        new javax.swing.Timer(10, new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Point p = comp.getLocation();
+                if (p.y > targetY) {
+                    comp.setLocation(targetX, p.y - speed);
+                } else {
+                    comp.setLocation(targetX, targetY);
+                    ((javax.swing.Timer) e.getSource()).stop();
+                }
+            }
+        }).start();
+    }
+
+
 
     @Override
     public void actionPerformed(ActionEvent e) {
